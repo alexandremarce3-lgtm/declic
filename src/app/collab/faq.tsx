@@ -5,7 +5,7 @@ import { AppText } from '@/components/AppText';
 import { AdultGate } from '@/components/collab/AdultGate';
 import { XpBar } from '@/components/rank/XpBar';
 import { Button } from '@/components/ui/Button';
-import { faq } from '@/content/locales/fr/collab';
+import { useCollab } from '@/hooks/useCollab';
 import { useI18n } from '@/i18n';
 import { QUEST_XP } from '@/lib/xp';
 import { useProgress } from '@/storage/progress';
@@ -18,6 +18,7 @@ export default function FaqScreen() {
   const { t } = useI18n();
   const c = t.collab;
   const { completeQuest, isQuestDone } = useProgress();
+  const { faq } = useCollab();
   const insets = useSafeAreaInsets();
   const [open, setOpen] = useState<string | null>(faq[0].id);
   const [understood, setUnderstood] = useState<string[]>(isQuestDone('faq-tfp') ? faq.map((f) => f.id) : []);

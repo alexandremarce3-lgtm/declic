@@ -4,32 +4,34 @@ import { Pressable, ScrollView, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/ui/Button';
-import { MOODBOARD_STYLES } from '@/content/locales/fr/collab';
+import { ALLOWANCE_IDS, MOOD_STYLE_IDS, SENSITIVE_ALLOWANCES, toAllowance, toMoodStyle } from '@/content/collabModel';
+import { useCollab } from '@/hooks/useCollab';
 import { useI18n } from '@/i18n';
 import { useProgress, type Moodboard } from '@/storage/progress';
 import { HIT, type } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
-/** Tenues / niveaux possibles. Les deux derniers ne s'affichent qu'aux personnes ayant déclaré leur majorité. */
-const LEVELS: { label: string; adultOnly?: boolean }[] = [
-  { label: 'Habillé' },
-  { label: 'Stylisme' },
-  { label: 'Maillot de bain' },
-  { label: 'Lingerie', adultOnly: true },
-  { label: 'Nu implicite', adultOnly: true },
-  { label: 'Nu artistique', adultOnly: true },
-];
-
-/** Quête « Mon moodboard » : styles aimés, ce que j'accepte et ce que je refuse. Préremplit le Contrat-Minute. */
+/**
+ * Quête « Mon moodboard » : styles aimés, ce que j'accepte et ce que je refuse. Préremplit le Contrat-Minute.
+ * Enregistré sous forme d'identifiants (valables dans toutes les langues). Les niveaux sensibles
+ * ne s'affichent qu'aux personnes ayant déclaré leur majorité.
+ */
 export default function MoodboardScreen() {
   const { colors, spacing, radius } = useTheme();
   const { t } = useI18n();
   const m = t.model;
+  const L = useCollab();
   const { stored, setMoodboard, completeQuest } = useProgress();
   const insets = useSafeAreaInsets();
-  const [mb, setMb] = useState<Moodboard>(stored.moodboard);
   const adult = stored.profile.adult === true;
-  const levels = LEVELS.filter((l) => adult || !l.adultOnly);
+
+  // Conversion des anciennes versions (libellés français) en identifiants
+  const [mb, setMb] = useState<Moodboard>(() => ({
+    ...stored.moodboard,
+    styles: stored.moodboard.styles.map(toMoodStyle).filter((x): x is NonNullable<typeof x> => x !== null),
+    accepts: stored.moodboard.accepts.map(toAllowance).filter((x): x is NonNullable<typeof x> => x !== null),
+  }));
+  const levels = ALLOWANCE_IDS.filter((id) => adult || !SENSITIVE_ALLOWANCES.includes(id));
 
   const toggle = (k: 'styles' | 'accepts', v: string) =>
     setMb((x) => ({ ...x, [k]: x[k].includes(v) ? x[k].filter((y) => y !== v) : [...x[k], v] }));
@@ -58,8 +60,8 @@ export default function MoodboardScreen() {
         {m.stylesTitle}
       </AppText>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
-        {MOODBOARD_STYLES.map((s) => (
-          <Chip key={s} label={s} on={mb.styles.includes(s)} onPress={() => toggle('styles', s)} />
+        {MOOD_STYLE_IDS.map((s) => (
+          <Chip key={s} label={L.moodStyles[s]} on={mb.styles.includes(s)} onPress={() => toggle('styles', s)} />
         ))}
       </View>
 
@@ -70,8 +72,8 @@ export default function MoodboardScreen() {
         {m.acceptsLead}
       </AppText>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
-        {levels.map((l) => (
-          <Chip key={l.label} label={l.label} danger={l.adultOnly} on={mb.accepts.includes(l.label)} onPress={() => toggle('accepts', l.label)} />
+        {levels.map((id) => (
+          <Chip key={id} label={L.allowances[id]} danger={SENSITIVE_ALLOWANCES.includes(id)} on={mb.accepts.includes(id)} onPress={() => toggle('accepts', id)} />
         ))}
       </View>
 
@@ -93,7 +95,7 @@ export default function MoodboardScreen() {
         disabled={!canSave}
         onPress={() => {
           // Tout ce qui n'est pas accepté est explicitement refusé (repris dans l'accord)
-          const refuses = LEVELS.map((l) => l.label).filter((l) => !mb.accepts.includes(l));
+          const refuses = ALLOWANCE_IDS.filter((id) => !mb.accepts.includes(id));
           setMoodboard({ ...mb, refuses });
           completeQuest('moodboard');
           router.back();

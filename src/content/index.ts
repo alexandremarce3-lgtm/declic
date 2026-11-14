@@ -8,6 +8,7 @@
 
 import type { Locale } from '@/i18n/locales';
 import { QUIZ_LENGTH } from '@/lib/tiers';
+import { enContent } from './locales/en';
 import { frContent } from './locales/fr';
 import type { ContentPack, SectionId, Sheet } from './types';
 
@@ -15,6 +16,7 @@ export type * from './types';
 
 export const contentPacks: Partial<Record<Locale, ContentPack>> = {
   fr: frContent,
+  en: enContent,
 };
 
 export type Catalog = ContentPack & {

@@ -9,7 +9,8 @@ import { AppText } from '@/components/AppText';
 import { AdultGate } from '@/components/collab/AdultGate';
 import { SignaturePad } from '@/components/collab/SignaturePad';
 import { Button, ChoiceCard } from '@/components/ui/Button';
-import { AGREEMENT_DISCLAIMER, agreementSections, isSensitive, type Signature } from '@/content/locales/fr/collab';
+import { isSensitive, type Signature } from '@/content/collabModel';
+import { useCollab } from '@/hooks/useCollab';
 import { useI18n } from '@/i18n';
 import { agreementHtml } from '@/lib/agreementPdf';
 import { isSigned, useAgreements } from '@/storage/agreements';
@@ -30,6 +31,7 @@ export default function SignScreen() {
   const c = t.collab;
   const { get, save, remove } = useAgreements();
   const { completeQuest } = useProgress();
+  const L = useCollab();
   const insets = useSafeAreaInsets();
   const agreement = get(id);
   const [scroll, setScroll] = useState(true);
@@ -56,7 +58,7 @@ export default function SignScreen() {
   const sharePdf = async () => {
     setBusy(true);
     try {
-      const { uri } = await Print.printToFileAsync({ html: agreementHtml(agreement, t.journal.date) });
+      const { uri } = await Print.printToFileAsync({ html: agreementHtml(agreement, t.journal.date, L) });
       await Sharing.shareAsync(uri, { mimeType: 'application/pdf', UTI: 'com.adobe.pdf', dialogTitle: c.sharePdf });
     } catch {
       Alert.alert(c.sharePdf, c.pdfError);
@@ -88,7 +90,7 @@ export default function SignScreen() {
         {!signed && <AppText muted>{c.reviewLead}</AppText>}
 
         <View style={{ padding: spacing.md, borderRadius: radius.lg, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, gap: spacing.md }}>
-          {agreementSections(agreement).map((s) => (
+          {L.agreementSections(agreement).map((s) => (
             <View key={s.title} style={{ gap: 2 }}>
               <AppText variant="overline" color={colors.primaryInk}>
                 {s.title.toUpperCase()}
@@ -124,7 +126,7 @@ export default function SignScreen() {
         )}
 
         <AppText variant="caption" muted>
-          {AGREEMENT_DISCLAIMER}
+          {L.disclaimer}
         </AppText>
         <Button kind="ghost" label={c.deleteAgreement} onPress={confirmDelete} />
       </ScrollView>

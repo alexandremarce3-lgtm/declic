@@ -27,6 +27,8 @@ avec l'adresse de ce dépôt.
 
 **iPhone :** pas encore disponible (une version web installable est envisagée).
 
+**Langues :** français et anglais, selon la langue du téléphone.
+
 ## Vie privée
 
 Aucune donnée n'est envoyée à l'éditeur ni à un tiers : progression, photos, accords et profil restent
@@ -174,8 +176,9 @@ La langue du téléphone est choisie seulement si l'interface **et** le contenu 
 sinon l'app reste en français. En développement, un avertissement liste les `id`
 manquants ou en trop par rapport au français.
 
-État actuel : interface en français et en anglais ; contenu en français uniquement
-(l'anglais s'activera dès que `locales/en/` existera).
+État actuel : **français et anglais complets** (interface + contenu, `content/locales/{fr,en}/`).
+L'espace collaborations a ses textes par langue dans `content/locales/<langue>/collab.ts`
+(accessibles via `useCollab()`), avec une structure commune dans `content/collabModel.ts`.
 
 ## Choix techniques
 

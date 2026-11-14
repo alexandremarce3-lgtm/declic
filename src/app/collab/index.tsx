@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { AdultGate } from '@/components/collab/AdultGate';
 import { Button } from '@/components/ui/Button';
-import { PROJECT_TYPES } from '@/content/locales/fr/collab';
+import { useCollab } from '@/hooks/useCollab';
 import { useI18n } from '@/i18n';
 import { QUEST_XP } from '@/lib/xp';
 import { isSigned, useAgreements } from '@/storage/agreements';
@@ -19,6 +19,7 @@ export default function CollabHub() {
   const c = t.collab;
   const { isQuestDone } = useProgress();
   const { agreements } = useAgreements();
+  const { projectTypes } = useCollab();
   const insets = useSafeAreaInsets();
 
   const Step = ({ n, title, lead, quest, href }: { n: number; title: string; lead: string; quest: string; href: Href }) => {
@@ -105,7 +106,7 @@ export default function CollabHub() {
                   {signed ? c.signed : c.draft}
                 </AppText>
                 <AppText variant="heading">
-                  {PROJECT_TYPES.find((p) => p.id === a.projectType)?.label} · {a.model || '…'} & {a.photographer || '…'}
+                  {projectTypes[a.projectType]} · {a.model || '…'} & {a.photographer || '…'}
                 </AppText>
                 <AppText variant="caption" muted>
                   {[a.date, a.place].filter(Boolean).join(' · ')}

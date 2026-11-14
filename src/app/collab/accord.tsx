@@ -5,7 +5,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { AdultGate } from '@/components/collab/AdultGate';
 import { Button } from '@/components/ui/Button';
-import { ALLOWANCES, DIFFUSIONS, PROJECT_TYPES, isSensitive, type Agreement, type Allowance, type Diffusion, type ProjectType } from '@/content/locales/fr/collab';
+import {
+  ALLOWANCE_IDS,
+  DIFFUSION_IDS,
+  PROJECT_IDS,
+  SENSITIVE_ALLOWANCES,
+  SENSITIVE_PROJECTS,
+  isSensitive,
+  toAllowance,
+  type Agreement,
+  type Allowance,
+} from '@/content/collabModel';
+import { useCollab } from '@/hooks/useCollab';
 import { useI18n } from '@/i18n';
 import { useAgreements } from '@/storage/agreements';
 import { displayName, useProgress } from '@/storage/progress';
@@ -13,17 +24,6 @@ import { HIT, type } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 const newId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
-
-/** Correspondance moodboard (parcours Modèle) → tenues autorisées */
-const FROM_MOODBOARD: Record<string, Allowance> = {
-  Habillé: 'habille',
-  'Habillé·e': 'habille',
-  Stylisme: 'stylisme',
-  'Maillot de bain': 'maillot',
-  Lingerie: 'lingerie',
-  'Nu implicite': 'implicite',
-  'Nu artistique': 'nu',
-};
 
 /** Contrat-Minute, étape 1 : remplir l'accord (brouillon modifiable jusqu'à la signature). */
 export default function AgreementForm() {
@@ -33,6 +33,7 @@ export default function AgreementForm() {
   const c = t.collab;
   const { stored } = useProgress();
   const { get, save } = useAgreements();
+  const L = useCollab();
   const insets = useSafeAreaInsets();
 
   const initial = useMemo<Agreement>(() => {
@@ -40,7 +41,7 @@ export default function AgreementForm() {
     if (existing) return existing;
     const me = displayName(stored.identity);
     const role = stored.profile.role;
-    const accepted = stored.moodboard.accepts.map((a) => FROM_MOODBOARD[a]).filter(Boolean) as Allowance[];
+    const accepted = stored.moodboard.accepts.map(toAllowance).filter((x): x is Allowance => x !== null);
     return {
       id: newId(),
       createdAt: new Date().toISOString(),
@@ -51,7 +52,13 @@ export default function AgreementForm() {
       photographer: role === 'photographe' || role === 'both' ? me : '',
       model: role === 'modele' ? me : '',
       allowed: accepted.length ? accepted : ['habille'],
-      forbidden: stored.moodboard.refuses.join(', '),
+      // Les refus du moodboard deviennent des interdits écrits, dans la langue de l'app
+      forbidden: stored.moodboard.refuses
+        .map((r) => {
+          const id = toAllowance(r);
+          return id ? L.allowances[id] : r;
+        })
+        .join(', '),
       deliveryCount: 10,
       deliveryDays: 30,
       diffusion: ['book', 'socialPhotographer', 'socialModel'],
@@ -59,7 +66,7 @@ export default function AgreementForm() {
       durationYears: 5,
       signatures: {},
     };
-  }, [id, get, stored]);
+  }, [id, get, stored, L]);
 
   const [a, setA] = useState<Agreement>(initial);
   const set = <K extends keyof Agreement>(k: K, v: Agreement[K]) => setA((x) => ({ ...x, [k]: v }));
@@ -125,8 +132,8 @@ export default function AgreementForm() {
 
         <Label>{c.fields.type}</Label>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
-          {PROJECT_TYPES.map((p) => (
-            <Chip key={p.id} label={p.label} sensitive={p.sensitive} on={a.projectType === p.id} onPress={() => set('projectType', p.id as ProjectType)} />
+          {PROJECT_IDS.map((p) => (
+            <Chip key={p} label={L.projectTypes[p]} sensitive={SENSITIVE_PROJECTS.includes(p)} on={a.projectType === p} onPress={() => set('projectType', p)} />
           ))}
         </View>
         {a.projectType === 'autre' && <TextInput value={a.projectOther} onChangeText={(v) => set('projectOther', v)} placeholder={c.placeholders.other} placeholderTextColor={colors.textMuted} style={inputStyle} />}
@@ -141,8 +148,8 @@ export default function AgreementForm() {
 
         <Label>{c.fields.allowed}</Label>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
-          {ALLOWANCES.map((x) => (
-            <Chip key={x.id} label={x.label} sensitive={x.sensitive} on={a.allowed.includes(x.id)} onPress={() => set('allowed', toggle(a.allowed, x.id))} />
+          {ALLOWANCE_IDS.map((x) => (
+            <Chip key={x} label={L.allowances[x]} sensitive={SENSITIVE_ALLOWANCES.includes(x)} on={a.allowed.includes(x)} onPress={() => set('allowed', toggle(a.allowed, x))} />
           ))}
         </View>
         {sensitive && (
@@ -166,8 +173,8 @@ export default function AgreementForm() {
 
         <Label>{c.fields.diffusion}</Label>
         <View style={{ gap: spacing.sm }}>
-          {DIFFUSIONS.map((d) => (
-            <Chip key={d.id} label={d.label} on={a.diffusion.includes(d.id)} onPress={() => set('diffusion', toggle(a.diffusion, d.id as Diffusion))} />
+          {DIFFUSION_IDS.map((d) => (
+            <Chip key={d} label={L.diffusions[d]} on={a.diffusion.includes(d)} onPress={() => set('diffusion', toggle(a.diffusion, d))} />
           ))}
           <Chip label={c.credit} on={a.credit} onPress={() => set('credit', !a.credit)} />
         </View>

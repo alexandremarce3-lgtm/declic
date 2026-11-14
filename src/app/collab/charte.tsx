@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { AdultGate } from '@/components/collab/AdultGate';
 import { Button, ChoiceCard } from '@/components/ui/Button';
-import { charter } from '@/content/locales/fr/collab';
+import { useCollab } from '@/hooks/useCollab';
 import { useI18n } from '@/i18n';
 import { useProgress } from '@/storage/progress';
 import { useTheme } from '@/theme/useTheme';
@@ -16,6 +16,7 @@ export default function CharterScreen() {
   const { t } = useI18n();
   const c = t.collab;
   const { completeQuest, isQuestDone } = useProgress();
+  const { charter } = useCollab();
   const insets = useSafeAreaInsets();
   const already = isQuestDone('charte-tfp');
   const [checked, setChecked] = useState(already);

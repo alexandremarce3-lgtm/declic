@@ -7,8 +7,8 @@
 **Learn photography, simply.** A free and open-source app:
 no account, no ads, no tracking. Everything stays on your phone.
 
-> 🇫🇷 The app is currently available **in French**. The interface is already translated into English;
-> the lessons will follow. Contributions are welcome!
+> 🇬🇧 🇫🇷 Available **in English and French**: the app follows your phone’s language.
+> Translations into other languages are welcome!
 
 - 📖 Lessons in two versions: **Simple** (everyday words, illustrated examples) and **Full** (interactive simulators).
 - 🎯 Real-life photo challenges to do with your camera or phone, and a photo journal to track your progress.

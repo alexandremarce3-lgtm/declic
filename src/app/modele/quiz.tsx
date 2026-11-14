@@ -7,7 +7,8 @@ import { AppText } from '@/components/AppText';
 import { Scene } from '@/components/illustrations/Scenes';
 import { XpBar } from '@/components/rank/XpBar';
 import { Button } from '@/components/ui/Button';
-import { lightQuiz, type LightQuestion } from '@/content/locales/fr/collab';
+import type { LightQuestion } from '@/content/collabModel';
+import { useCollab } from '@/hooks/useCollab';
 import { useI18n } from '@/i18n';
 import { useProgress } from '@/storage/progress';
 import { HIT } from '@/theme/tokens';
@@ -25,7 +26,7 @@ function shuffled<T>(list: T[]) {
 }
 
 type Drawn = LightQuestion & { order: number[] };
-const draw = (): Drawn[] => shuffled(lightQuiz).map((q) => ({ ...q, order: shuffled([0, 1, 2, 3]) }));
+const draw = (bank: LightQuestion[]): Drawn[] => shuffled(bank).map((q) => ({ ...q, order: shuffled([0, 1, 2, 3]) }));
 
 /** Quiz visuel « La lumière sur un visage » : d'où vient la lumière, et ce qu'elle fait aux volumes. */
 export default function LightQuiz() {
@@ -35,7 +36,8 @@ export default function LightQuiz() {
   const { completeQuest } = useProgress();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
-  const [questions, setQuestions] = useState<Drawn[]>(draw);
+  const { lightQuiz } = useCollab();
+  const [questions, setQuestions] = useState<Drawn[]>(() => draw(lightQuiz));
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -62,7 +64,7 @@ export default function LightQuiz() {
   };
 
   const restart = () => {
-    setQuestions(draw());
+    setQuestions(draw(lightQuiz));
     setIndex(0);
     setPicked(null);
     setScore(0);

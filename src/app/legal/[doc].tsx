@@ -3,7 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { EDITOR_INCOMPLETE } from '@/config/editor';
-import { legalDocs } from '@/content/locales/fr/collab';
+import { useCollab } from '@/hooks/useCollab';
 import { useI18n } from '@/i18n';
 import { useTheme } from '@/theme/useTheme';
 
@@ -13,6 +13,7 @@ export default function LegalScreen() {
   const { colors, spacing, radius } = useTheme();
   const { t } = useI18n();
   const insets = useSafeAreaInsets();
+  const { legalDocs } = useCollab();
   const d = legalDocs.find((x) => x.id === doc) ?? legalDocs[0];
 
   return (

@@ -1,0 +1,147 @@
+import type { Sheet } from '@/content/types';
+
+export const situations: Sheet[] = [
+  {
+    id: 'portrait',
+    tier: 'avance',
+    section: 'situations',
+    title: 'Outdoor portrait',
+    summary: 'A sharp face, a background that fades away.',
+    glyph: '◉',
+    minutes: 3,
+    keySettings: 'A/Av · f/2.8 · eye',
+    blocks: [
+      {
+        kind: 'settings',
+        title: 'Starting settings',
+        items: [
+          { label: 'Mode', value: 'Aperture priority (A / Av)' },
+          { label: 'Aperture', value: 'f/2.8', note: 'f/1.8 – f/4 depending on the lens' },
+          { label: 'Shutter speed', value: '1/250 s minimum', note: 'Keep an eye on it, the camera picks it' },
+          { label: 'ISO', value: 'Auto, 100 – 800' },
+          { label: 'Focus', value: 'On the nearest eye', note: 'Eye AF if available' },
+        ],
+      },
+      { kind: 'simulator', focus: 'aperture', preset: { aperture: 2.8, shutter: 1 / 500, iso: 400 } },
+      {
+        kind: 'steps',
+        title: 'In the field',
+        ordered: true,
+        items: [
+          'Put the person in the shade, or with the sun behind them late in the day.',
+          'Move them away from the background: several metres is ideal.',
+          'Frame at eye level, then focus on the eye.',
+          'Shoot short bursts to catch a natural expression.',
+        ],
+      },
+      { kind: 'tip', label: 'Avoid', body: 'The midday sun full on the face: hard shadows and squinting eyes.' },
+      { kind: 'related', sheets: ['ouverture'], challenges: ['fond-flou'] },
+    ],
+  },
+  {
+    id: 'rue',
+    tier: 'avance',
+    section: 'situations',
+    title: 'Street photography',
+    summary: 'Catch the moment, without being noticed.',
+    glyph: '⌁',
+    minutes: 3,
+    keySettings: 'S/Tv · 1/500 s · auto ISO',
+    blocks: [
+      {
+        kind: 'settings',
+        title: 'Starting settings',
+        items: [
+          { label: 'Mode', value: 'Shutter priority (S / Tv)' },
+          { label: 'Shutter speed', value: '1/500 s minimum', note: 'Passers-by move fast' },
+          { label: 'ISO', value: 'Auto', note: 'Suggested ceiling: 3200 – 6400' },
+          { label: 'Focus', value: 'Continuous (AF-C)' },
+        ],
+      },
+      { kind: 'simulator', focus: 'shutter', preset: { shutter: 1 / 500, iso: 800, aperture: 4 } },
+      {
+        kind: 'steps',
+        title: 'In the field',
+        items: [
+          'A small camera or a smartphone draws less attention.',
+          'Find a nice setting (light, wall, shadow) and wait for someone to walk into it.',
+          'Stay in the same spot: people end up forgetting you.',
+        ],
+      },
+      {
+        kind: 'tip',
+        label: 'Image rights',
+        body: 'Taking photos in the street is allowed, but publishing a recognisable portrait of someone generally requires their consent (in France and many other countries). When in doubt, ask, or show them the photo.',
+      },
+      { kind: 'related', sheets: ['vitesse'], challenges: ['mouvement-fige'] },
+    ],
+  },
+  {
+    id: 'paysage',
+    tier: 'avance',
+    section: 'situations',
+    title: 'Landscape',
+    summary: 'Sharp from near to far.',
+    glyph: '⛰',
+    minutes: 3,
+    keySettings: 'Tripod · f/8 – f/11',
+    blocks: [
+      {
+        kind: 'settings',
+        title: 'Starting settings',
+        items: [
+          { label: 'Mode', value: 'Aperture priority (A / Av)' },
+          { label: 'Aperture', value: 'f/8 – f/11', note: 'The sharpest range of most lenses' },
+          { label: 'ISO', value: '100' },
+          { label: 'Support', value: 'Tripod', note: 'Shutter speed can then drop safely' },
+          { label: 'Focus', value: 'On the first third of the scene' },
+        ],
+      },
+      { kind: 'simulator', focus: 'aperture', preset: { aperture: 11, iso: 100, shutter: 1 / 8 } },
+      {
+        kind: 'steps',
+        title: 'Composing',
+        items: [
+          'Look for a foreground (rock, flower, path): it adds depth.',
+          'Put the horizon on a third, and keep it level.',
+          'Go out early in the morning or late in the day: low light sculpts the land.',
+        ],
+      },
+      { kind: 'tip', body: 'Beyond f/16, the image loses a little sharpness (diffraction). Stay around f/8 – f/11.' },
+      { kind: 'related', sheets: ['regle-des-tiers'], challenges: ['minimalisme', 'tout-net'] },
+    ],
+  },
+  {
+    id: 'nuit',
+    tier: 'avance',
+    section: 'situations',
+    title: 'Low light and night',
+    summary: 'Long exposures, without moving a millimetre.',
+    glyph: '☾',
+    minutes: 4,
+    keySettings: 'M · tripod · 2 s timer',
+    blocks: [
+      {
+        kind: 'settings',
+        title: 'Starting settings',
+        items: [
+          { label: 'Mode', value: 'Manual (M)' },
+          { label: 'Aperture', value: 'f/8', note: 'Street lights turn into stars' },
+          { label: 'ISO', value: '100 – 400', note: 'On a tripod, no need to go higher' },
+          { label: 'Shutter speed', value: '2 to 30 s', note: 'Adjust with the exposure scale' },
+          { label: 'Release', value: '2 s self-timer', note: 'Avoids shaking the camera' },
+          { label: 'Focus', value: 'Manual', note: 'Autofocus struggles in the dark' },
+        ],
+      },
+      { kind: 'simulator', focus: 'all', light: -3, preset: { aperture: 8, shutter: 1 / 2, iso: 100 } },
+      {
+        kind: 'steps',
+        title: 'In the field',
+        ordered: true,
+        items: ['Set up the tripod and turn off stabilisation.', 'Focus by zooming in on a light on the screen.', 'Shoot with the self-timer, check the screen, adjust the shutter speed.'],
+      },
+      { kind: 'tip', label: 'Smartphone', body: 'Night mode combines several images. Brace the phone against a wall or a bench while it shoots.' },
+      { kind: 'related', sheets: ['iso', 'vitesse'], challenges: ['nuit-sans-flash'] },
+    ],
+  },
+];

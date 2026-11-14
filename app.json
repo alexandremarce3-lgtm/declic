@@ -2,21 +2,21 @@
   "expo": {
     "name": "Déclic",
     "slug": "declic",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "scheme": "declic",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "org.declic.app",
+      "bundleIdentifier": "com.lenspicture.declic",
       "infoPlist": {},
       "config": {
         "usesNonExemptEncryption": false
       }
     },
     "android": {
-      "package": "org.declic.app",
+      "package": "com.lenspicture.declic",
       "adaptiveIcon": {
         "backgroundColor": "#0A0C10",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -61,7 +61,17 @@
           }
         }
       ],
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "buildArchs": ["arm64-v8a", "armeabi-v7a"],
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

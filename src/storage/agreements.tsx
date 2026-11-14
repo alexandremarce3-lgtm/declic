@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import type { Agreement } from '@/content/locales/fr/collab';
+import type { Agreement } from '@/content/collabModel';
 
 /**
  * Accords de collaboration (Contrat-Minute), enregistrés uniquement sur ce téléphone.

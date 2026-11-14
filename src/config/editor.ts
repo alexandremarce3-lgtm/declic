@@ -16,5 +16,15 @@ export const EDITOR = {
   lastUpdate: '14 novembre 2026',
 } as const;
 
+/** Les mêmes informations, en anglais (la version française fait foi) */
+export const EDITOR_EN = {
+  ...EDITOR,
+  status: 'Non-professional publisher (private individual)',
+  address: 'Not published: non-professional publisher, identity provided to the host (French LCEN law, art. 6, III-2)',
+  hosting: 'GitHub, Inc. — 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA (source code and installation files)',
+  distribution: 'Installation files published on GitHub; built with Expo Application Services (EAS)',
+  lastUpdate: '14 November 2026',
+} as const;
+
 /** true tant qu'un champ contient des crochets à remplir */
 export const EDITOR_INCOMPLETE = Object.values(EDITOR).some((v) => v.includes('['));
