@@ -1,7 +1,42 @@
+<p align="center"><img src="assets/icon.png" width="120" alt="Icône Déclic : un diaphragme ambre" /></p>
+
 # Déclic
 
-Application mobile libre et gratuite pour apprendre les bases de la photographie.
-Sans compte, sans publicité, sans collecte de données : la progression reste sur le téléphone.
+**Apprendre la photographie, simplement.** Application libre et gratuite :
+sans compte, sans publicité, sans pistage. Tout reste sur votre téléphone.
+
+- 📖 Des fiches en deux versions : **Simple** (mots du quotidien, exemples dessinés) et **Complète** (simulateurs).
+- 🎯 Des défis à faire avec votre appareil ou votre téléphone, et un carnet photo pour suivre vos progrès.
+- 🆘 « SOS Photo ratée » : flou, trop sombre, trop clair, grain… la solution en un geste.
+- 🏅 Rangs C → S, XP, avatar à personnaliser, succès (dont des secrets).
+- 🤝 Pour photographes et modèles (18 ans et plus) : les règles du TFP, une charte et le **Contrat-Minute**,
+  un accord écrit signé à deux et exporté en PDF.
+
+## Installer (Android)
+
+1. Ouvrez la page **[Releases](../../releases/latest)** depuis votre téléphone Android.
+2. Téléchargez le fichier `.apk` de la dernière version.
+3. Ouvrez-le. Android demande d'autoriser l'installation depuis cette source : acceptez.
+4. Si Play Protect affiche un avertissement, touchez « Installer quand même » (normal hors Play Store).
+
+**Mises à jour :** installez la nouvelle version par-dessus l'ancienne, votre progression est conservée.
+Pour être prévenu automatiquement, utilisez l'app libre [Obtainium](https://github.com/ImranR98/Obtainium)
+avec l'adresse de ce dépôt.
+
+**iPhone :** pas encore disponible (une version web installable est envisagée).
+
+## Vie privée
+
+Aucune donnée n'est envoyée à l'éditeur ni à un tiers : progression, photos, accords et profil restent
+dans la mémoire de l'application. Voir la politique de confidentialité dans l'app (Profil > Mes données).
+
+## Licence
+
+Code sous licence [MIT](LICENSE). Polices Playfair Display et Inter sous licence SIL Open Font License 1.1.
+
+---
+
+## Pour les développeurs
 
 Expo SDK 58 · React Native 0.88 · TypeScript · Expo Router
 
