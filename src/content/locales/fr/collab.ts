@@ -189,6 +189,7 @@ export const legalDocs: LegalDoc[] = [
     sections: [
       { title: 'Éditeur', body: `${EDITOR.name}\n${EDITOR.status}\n${EDITOR.address}\nContact : ${EDITOR.email}` },
       { title: 'Directeur ou directrice de la publication', body: EDITOR.publicationDirector },
+      { title: 'Hébergeur', body: EDITOR.hosting },
       { title: 'Distribution', body: EDITOR.distribution },
       {
         title: 'Hébergement des données',

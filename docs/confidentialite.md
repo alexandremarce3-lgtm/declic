@@ -9,7 +9,9 @@ nous ne les vendons pas. Pas de compte, pas de publicité, pas de traceur, pas d
 
 ## Responsable
 
-[Nom de l'éditeur — à compléter] — [adresse e-mail de contact — à compléter]
+alexandremarce3 (éditeur non professionnel) — contact@lenspicture.com
+
+*[English version](privacy.md)*
 
 ## Données concernées
 
