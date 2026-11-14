@@ -13,7 +13,7 @@ export const EDITOR = {
   publicationDirector: 'alexandremarce3',
   hosting: 'GitHub, Inc. — 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis (code source et fichiers d’installation)',
   distribution: 'Fichiers d’installation publiés sur GitHub ; compilation par Expo Application Services (EAS)',
-  lastUpdate: '15 novembre 2026',
+  lastUpdate: '14 novembre 2026',
 } as const;
 
 /** true tant qu'un champ contient des crochets à remplir */

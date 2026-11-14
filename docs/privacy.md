@@ -1,6 +1,6 @@
 # Privacy policy — Déclic
 
-*Last updated: 15 November 2026. Translation of the [French version](confidentialite.md), which prevails.*
+*Last updated: 14 November 2026. Translation of the [French version](confidentialite.md), which prevails.*
 
 ## In short
 

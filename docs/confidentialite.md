@@ -1,6 +1,6 @@
 # Politique de confidentialité — Déclic
 
-*Dernière mise à jour : 15 novembre 2026. Même texte que dans l'application (Profil > Mes données).*
+*Dernière mise à jour : 14 novembre 2026. Même texte que dans l'application (Profil > Mes données).*
 
 ## En résumé
 
