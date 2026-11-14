@@ -33,6 +33,7 @@ export const en: UiStrings = {
     model: 'Model path',
     moodboard: 'My moodboard',
     lightQuiz: 'Light on a face',
+    about: 'About',
   },
 
   ranks: {
@@ -134,6 +135,21 @@ export const en: UiStrings = {
     locked: 'Level locked',
     seeAll: 'See details ›',
     summary: (done, total) => `${done} of ${total}`,
+  },
+
+  about: {
+    title: 'About',
+    link: 'About Déclic',
+    version: (v) => `Version ${v}`,
+    tagline: 'Learn photography, simply. Free, open source, no account, no ads, no tracking.',
+    source: 'Source code',
+    sourceLead: (license) => `Open source project, ${license} licence`,
+    updates: 'New versions',
+    updatesLead: 'Download the latest version on GitHub',
+    contact: 'Contact the publisher',
+    licensesTitle: 'OPEN SOURCE LICENCES',
+    licensesLead: 'Déclic is built on these free software and fonts. Thanks to their authors.',
+    footer: 'Made with care for people discovering photography.',
   },
 
   onboarding: {

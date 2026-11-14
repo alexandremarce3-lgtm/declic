@@ -77,11 +77,12 @@ export function JournalProvider({ children }: { children: ReactNode }) {
   const addPhoto = useCallback(
     async (challengeId: string, source: PickSource): Promise<PickResult> => {
       try {
-        const perm =
-          source === 'camera'
-            ? await ImagePicker.requestCameraPermissionsAsync()
-            : await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (!perm.granted) return { ok: false, reason: 'denied' };
+        // La galerie passe par le sélecteur de photos du système : aucune autorisation à demander
+        // (et aucun accès à toute la photothèque). Seul l'appareil photo demande l'accord.
+        if (source === 'camera') {
+          const perm = await ImagePicker.requestCameraPermissionsAsync();
+          if (!perm.granted) return { ok: false, reason: 'denied' };
+        }
 
         const options: ImagePicker.ImagePickerOptions = { mediaTypes: ['images'], quality: 0.8, exif: false };
         const result =

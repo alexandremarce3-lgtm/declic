@@ -71,6 +71,7 @@ function AppStack() {
         <Stack.Screen name="modele/index" options={{ title: t.nav.model }} />
         <Stack.Screen name="modele/moodboard" options={{ title: t.nav.moodboard }} />
         <Stack.Screen name="modele/quiz" options={{ title: t.nav.lightQuiz }} />
+        <Stack.Screen name="a-propos" options={{ title: t.nav.about }} />
       </Stack>
       <XpToast />
       <AchievementWatcher />

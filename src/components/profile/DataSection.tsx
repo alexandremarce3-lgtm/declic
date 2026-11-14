@@ -48,6 +48,9 @@ export function DataSection() {
         {l.sectionTitle}
       </AppText>
       <View style={{ borderRadius: radius.lg, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface, overflow: 'hidden' }}>
+        <View style={{ borderBottomWidth: 1, borderBottomColor: colors.border }}>
+          <Row label={t.about.link} onPress={() => router.push('/a-propos')} />
+        </View>
         {(['confidentialite', 'conditions', 'mentions'] as const).map((d) => (
           <View key={d} style={{ borderBottomWidth: 1, borderBottomColor: colors.border }}>
             <Row label={l.links[d]} onPress={() => router.push({ pathname: '/legal/[doc]', params: { doc: d } })} />

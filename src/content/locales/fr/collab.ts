@@ -216,7 +216,7 @@ export const legalDocs: LegalDoc[] = [
       },
       {
         title: 'Où sont-elles ?',
-        body: 'Uniquement dans la mémoire privée de l’application, sur votre téléphone. Aucune n’est transmise à l’éditeur ni à un tiers. Les photos du carnet sont copiées dans un dossier réservé à l’app, inaccessible aux autres applications.',
+        body: 'Uniquement dans la mémoire privée de l’application, sur votre téléphone. Aucune n’est transmise à l’éditeur ni à un tiers. Les photos du carnet sont copiées dans un dossier réservé à l’app, inaccessible aux autres applications. La sauvegarde automatique d’Android (vers Google Drive) est désactivée pour Déclic : seule la sauvegarde que vous exportez vous-même permet de retrouver vos données.',
       },
       {
         title: 'À quoi servent-elles ?',
@@ -224,7 +224,7 @@ export const legalDocs: LegalDoc[] = [
       },
       {
         title: 'Autorisations du téléphone',
-        body: 'L’appareil photo et la galerie ne sont demandés qu’au moment où vous ajoutez une photo au carnet. Vous pouvez retirer ces autorisations à tout moment dans les réglages du téléphone.',
+        body: 'L’appareil photo n’est demandé qu’au moment où vous prenez une photo pour le carnet. Pour la galerie, Déclic utilise le sélecteur de photos du téléphone : l’app ne reçoit que les photos que vous choisissez, jamais l’accès à toute votre photothèque. Le micro n’est jamais utilisé.',
       },
       {
         title: 'Partage',

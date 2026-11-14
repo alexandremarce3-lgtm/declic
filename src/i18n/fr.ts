@@ -38,6 +38,7 @@ export const fr = {
     model: 'Parcours Modèle',
     moodboard: 'Mon moodboard',
     lightQuiz: 'La lumière sur un visage',
+    about: 'À propos',
   },
 
   ranks: {
@@ -141,6 +142,21 @@ export const fr = {
     locked: 'Niveau verrouillé',
     seeAll: 'Voir le détail ›',
     summary: (done: number, total: number) => `${done} sur ${total}`,
+  },
+
+  about: {
+    title: 'À propos',
+    link: 'À propos de Déclic',
+    version: (v: string) => `Version ${v}`,
+    tagline: 'Apprendre la photographie, simplement. Libre, gratuit, sans compte, sans publicité, sans pistage.',
+    source: 'Code source',
+    sourceLead: (license: string) => `Projet open source, licence ${license}`,
+    updates: 'Nouvelles versions',
+    updatesLead: 'Téléchargez la dernière version sur GitHub',
+    contact: 'Contacter l’éditeur',
+    licensesTitle: 'LICENCES OPEN SOURCE',
+    licensesLead: 'Déclic s’appuie sur ces logiciels et polices libres. Merci à leurs auteurs.',
+    footer: 'Fait avec soin pour celles et ceux qui découvrent la photo.',
   },
 
   onboarding: {

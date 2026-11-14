@@ -11,7 +11,7 @@ export const EDITOR = {
   email: '[adresse e-mail de contact]',
   publicationDirector: '[Nom du directeur ou de la directrice de la publication]',
   distribution: 'Expo Application Services (EAS) pour les versions de test ; Google Play / App Store pour les versions publiques',
-  lastUpdate: '14 novembre 2026',
+  lastUpdate: '15 novembre 2026',
 } as const;
 
 /** true tant que les champs ci-dessus contiennent des crochets à remplir */
