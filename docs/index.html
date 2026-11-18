@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Déclic — Apprendre la photographie, simplement</title>
+<meta name="description" content="Déclic : application Android libre et gratuite pour apprendre la photographie. Fiches simples ou complètes, simulateurs, défis, SOS Photo ratée. Sans compte, sans publicité, sans pistage.">
+<meta name="theme-color" content="#0A0C10" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F4F4F2" media="(prefers-color-scheme: light)">
+<meta name="color-scheme" content="dark light">
+<meta property="og:title" content="Déclic — Apprendre la photographie, simplement">
+<meta property="og:description" content="Application libre et gratuite : sans compte, sans publicité, sans pistage. Tout reste sur votre téléphone.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/icon-512.png">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Polices hébergées avec le site (aucune requête vers un service tiers) — SIL Open Font License 1.1 */
+@font-face{font-family:"Playfair Display";font-weight:600;font-style:normal;font-display:swap;src:url(assets/fonts/playfair-display-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Playfair Display";font-weight:700;font-style:normal;font-display:swap;src:url(assets/fonts/playfair-display-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Playfair Display";font-weight:700;font-style:italic;font-display:swap;src:url(assets/fonts/playfair-display-latin-700-italic.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:400;font-style:normal;font-display:swap;src:url(assets/fonts/inter-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:500;font-style:normal;font-display:swap;src:url(assets/fonts/inter-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:600;font-style:normal;font-display:swap;src:url(assets/fonts/inter-latin-600-normal.woff2) format("woff2")}
+
+/* Jetons repris de src/theme/tokens.ts — « Chambre Noire » (sombre) / « Papier Studio » (clair) */
+:root{
+  --olive:#3B5249; --amber:#E5B239; --brick:#C2593F;
+  --bg:#0A0C10; --surface:#161A20; --surface-alt:#1F242C; --border:#2A3039;
+  --text:#ECEAE4; --muted:#9BA1A8;
+  --primary-ink:#93B3A4; --accent-ink:#E5B239; --danger-ink:#E07A60;
+  --on-accent:#0A0C10; --on-primary:#ECEAE4;
+  --glow:rgba(229,178,57,.10);
+  --r-sm:6px; --r-md:10px; --r-lg:16px;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F4F4F2; --surface:#FBFBF9; --surface-alt:#EAEAE5; --border:#DCDCD5;
+    --text:#1B1D1B; --muted:#5D615D;
+    --primary-ink:#3B5249; --accent-ink:#86620F; --danger-ink:#A6432B;
+    --on-accent:#1B1D1B; --on-primary:#F4F4F2;
+    --glow:rgba(229,178,57,.18);
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F4F4F2; --surface:#FBFBF9; --surface-alt:#EAEAE5; --border:#DCDCD5;
+  --text:#1B1D1B; --muted:#5D615D;
+  --primary-ink:#3B5249; --accent-ink:#86620F; --danger-ink:#A6432B;
+  --on-accent:#1B1D1B; --on-primary:#F4F4F2;
+  --glow:rgba(229,178,57,.18);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+::selection{background:var(--amber);color:#0A0C10}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--amber);color:#0A0C10;padding:8px 14px;border-radius:var(--r-md);z-index:99}
+.skip:focus{left:8px}
+
+/* Typo — titres serif (esprit magazine photo), textes en Inter */
+h1,h2,h3{font-family:var(--serif);font-weight:700;letter-spacing:-.01em;margin:0}
+.overline{font:600 11px/14px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 12px}
+.lead{color:var(--muted);font-size:18px;line-height:1.65}
+.muted{color:var(--muted)}
+
+/* En-tête */
+header{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--border)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand svg{width:38px;height:38px;border-radius:10px}
+.brand b{font:700 22px/1 var(--serif)}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
+nav a{text-decoration:none;font-size:14px;font-weight:500;color:var(--muted)}
+nav a:hover{color:var(--text)}
+.tools{display:flex;align-items:center;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:var(--r-md);border:1px solid var(--border);background:var(--surface);color:var(--text);font:600 13px var(--sans);cursor:pointer;text-decoration:none}
+.chip:hover{border-color:color-mix(in srgb,var(--amber) 50%,var(--border))}
+.chip svg{width:18px;height:18px}
+.menu-btn{display:none}
+@media (max-width:860px){
+  nav{display:none;position:absolute;left:0;right:0;top:68px;background:var(--surface);border-bottom:1px solid var(--border)}
+  nav.open{display:block}
+  nav ul{flex-direction:column;gap:0;padding:8px 20px 16px}
+  nav a{display:block;padding:12px 0;font-size:16px;border-bottom:1px solid var(--border)}
+  .menu-btn{display:inline-flex}
+  .gh-label{display:none}
+}
+
+/* Boutons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:var(--r-lg);font:600 15px var(--sans);text-decoration:none;border:1px solid transparent;transition:transform .15s, background .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn svg{width:20px;height:20px}
+.btn-accent{background:var(--amber);color:#0A0C10}
+.btn-accent:hover{background:#EDC257}
+.btn-ghost{background:var(--surface);border-color:var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:color-mix(in srgb,var(--amber) 50%,var(--border))}
+
+/* Héros */
+.hero{position:relative;padding:72px 0 88px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 400px at 75% 30%,var(--glow),transparent 70%);pointer-events:none}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font:500 12.5px var(--sans);color:var(--muted)}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:var(--primary-ink)}
+.hero h1{font-size:clamp(40px,6.2vw,68px);line-height:1.06;margin-bottom:20px}
+.hero h1 em{font-style:italic;color:var(--accent-ink)}
+.hero .lead{max-width:560px;margin:0 0 32px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.small-note{margin-top:20px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.small-note svg{width:16px;height:16px;color:var(--primary-ink);flex:none}
+@media (max-width:860px){.hero{padding:48px 0 64px}.hero-grid{grid-template-columns:1fr;gap:48px}.ctas .btn{flex:1 1 100%}}
+
+/* Maquette de téléphone (dessinée en HTML, pas de capture) */
+.phone{justify-self:center;width:min(300px,100%);aspect-ratio:9/18.5;border-radius:38px;padding:10px;background:linear-gradient(160deg,#2A3039,#0f1216);box-shadow:0 30px 80px -30px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04) inset}
+.screen{height:100%;border-radius:30px;background:#0A0C10;color:#ECEAE4;padding:22px 16px;display:flex;flex-direction:column;gap:12px;overflow:hidden;font-size:13px}
+.screen .s-over{font:600 9.5px var(--sans);letter-spacing:.16em;color:#E5B239}
+.screen .s-title{font:700 24px/1.15 var(--serif)}
+.s-card{background:#161A20;border:1px solid #2A3039;border-radius:14px;padding:12px}
+.s-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.rank{width:38px;height:38px;border-radius:10px;background:#3B5249;color:#ECEAE4;display:grid;place-items:center;font:700 18px var(--serif)}
+.xp{height:6px;border-radius:6px;background:#1F242C;overflow:hidden;margin-top:10px}
+.xp i{display:block;height:100%;width:62%;background:#E5B239;border-radius:6px}
+.s-sheet{display:flex;gap:10px;align-items:center}
+.s-sheet .ico{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:#1F242C;color:#93B3A4;flex:none}
+.s-sheet .ico svg{width:16px;height:16px}
+.s-sheet small{display:block;color:#9BA1A8;font-size:11px}
+.s-sos{background:#C2593F;color:#fff;border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px;font-weight:600;margin-top:auto}
+.s-sos svg{width:18px;height:18px}
+
+/* Sections */
+section{padding:88px 0;border-top:1px solid var(--border)}
+.head{max-width:680px;margin-bottom:48px}
+.head h2{font-size:clamp(30px,4.2vw,44px);line-height:1.15}
+.head p{margin:16px 0 0}
+.center{text-align:center;margin-left:auto;margin-right:auto}
+.grid{display:grid;gap:20px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+@media (max-width:860px){.g3,.g2{grid-template-columns:1fr}section{padding:64px 0}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px}
+.card h3{font-size:21px;line-height:1.3;margin:0 0 10px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;margin-bottom:18px;background:color-mix(in srgb,var(--olive) 22%,transparent);color:var(--primary-ink)}
+.ic svg{width:22px;height:22px}
+.ic.amber{background:color-mix(in srgb,var(--amber) 16%,transparent);color:var(--accent-ink)}
+.ic.brick{background:color-mix(in srgb,var(--brick) 18%,transparent);color:var(--danger-ink)}
+.tag{display:inline-block;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);width:100%;font:600 12px var(--sans);letter-spacing:.04em;color:var(--accent-ink)}
+.card.sos{border-color:color-mix(in srgb,var(--brick) 45%,var(--border))}
+.card.sos .tag{color:var(--danger-ink)}
+.span2{grid-column:span 2}
+@media (max-width:860px){.span2{grid-column:auto}}
+
+/* Rangs */
+.ranks{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.rk{border:1px solid var(--border);border-radius:var(--r-md);padding:14px;background:var(--surface-alt)}
+.rk b{display:block;font:700 26px/1 var(--serif);color:var(--accent-ink);margin-bottom:8px}
+.rk span{display:block;font-size:13px;font-weight:600}
+.rk small{color:var(--muted);font-size:12px}
+@media (max-width:560px){.ranks{grid-template-columns:repeat(2,1fr)}}
+
+/* Installation */
+.steps{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:12px;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:var(--r-md);background:var(--surface-alt);border:1px solid var(--border);font-size:15px}
+.steps li::before{content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--olive);color:#ECEAE4;font:600 13px var(--sans)}
+.steps strong{color:var(--text)}
+.steps p{margin:0;color:var(--muted)}
+.stack{display:grid;gap:20px;align-content:start}
+.card .btn{width:100%}
+.card a.inline{color:var(--accent-ink);text-underline-offset:3px}
+
+/* Vie privée */
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.fact{padding:16px;border-radius:var(--r-md);background:var(--surface-alt);border:1px solid var(--border)}
+.fact h4{margin:0 0 4px;font:600 14px var(--sans);display:flex;gap:8px;align-items:center}
+.fact h4 svg{width:16px;height:16px;color:var(--primary-ink)}
+.fact p{margin:0;font-size:13px;color:var(--muted)}
+@media (max-width:860px){.facts{grid-template-columns:1fr}}
+
+/* Pied de page */
+footer{border-top:1px solid var(--border);padding:48px 0 40px;font-size:14px;color:var(--muted)}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:center}
+.foot .brand svg{width:30px;height:30px;border-radius:8px}
+.foot .brand b{font-size:18px;color:var(--text)}
+.foot ul{display:flex;flex-wrap:wrap;gap:20px;list-style:none;margin:0;padding:0}
+.foot a{text-decoration:none}
+.foot a:hover{color:var(--text)}
+details.legal{margin-top:32px;border-top:1px solid var(--border);padding-top:20px}
+details.legal summary{cursor:pointer;font-weight:600;color:var(--text)}
+details.legal dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin:16px 0 0;font-size:13px}
+details.legal dt{color:var(--text);font-weight:500}
+details.legal dd{margin:0}
+@media (max-width:560px){details.legal dl{grid-template-columns:1fr}details.legal dd{margin-bottom:8px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Aller au contenu</a>
+
+<!-- Logo : le diaphragme de l'icône de l'app (assets/icon.png), redessiné en SVG -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 100 100">
+      <rect width="100" height="100" fill="#0A0C10"/>
+      <circle cx="50" cy="50" r="36" fill="none" stroke="#3B5249" stroke-width="3.2"/>
+      <circle cx="50" cy="50" r="30" fill="#E5B239"/>
+      <polygon points="52.3,41.3 58.7,47.7 56.4,56.4 47.7,58.7 41.3,52.3 43.6,43.6" fill="#0A0C10"/>
+      <path d="M52.3 41.3L76.4 65.3M58.7 47.7L49.9 80.5M56.4 56.4L23.5 65.2M47.7 58.7L23.6 34.7M41.3 52.3L50.1 19.5M43.6 43.6L76.5 34.8" stroke="#0A0C10" stroke-width="2.2"/>
+      <circle cx="53.4" cy="46.2" r="2.2" fill="#93B3A4"/>
+    </symbol>
+    <symbol id="i-android" viewBox="0 0 24 24"><path fill="currentColor" d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-sos" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></symbol>
+    <symbol id="i-sign" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 17c1.5-2 2.5-2 3 0s1.5 1 2.5-.5 1.5-1 2.5.5"/></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m2 9 10-5 10 5-10 5zM6 11v5c3 2.5 9 2.5 12 0v-5M22 9v6"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18v12H3zM8 8V5h8v3M12 12v4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M3 21v-5h5"/></symbol>
+    <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.4.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 5c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.2.1 2.3-.6 3.1-1.5z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-ban" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
+  </defs>
+</svg>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="Déclic">
+      <svg aria-hidden="true"><use href="#logo"/></svg>
+      <b>Déclic</b>
+    </a>
+    <nav id="nav" aria-label="Navigation principale" data-i18n-attr="aria-label:navLabel">
+      <ul>
+        <li><a href="#pour-qui" data-i18n="navAudience">Pour qui ?</a></li>
+        <li><a href="#fonctionnalites" data-i18n="navFeatures">Fonctionnalités</a></li>
+        <li><a href="#installer" data-i18n="navInstall">Installer</a></li>
+        <li><a href="#vie-privee" data-i18n="navPrivacy">Vie privée</a></li>
+        <li><a href="#contact" data-i18n="navContact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="tools">
+      <button class="chip" id="lang" type="button" aria-label="Switch to English">EN</button>
+      <button class="chip" id="theme" type="button" aria-label="Changer de thème" data-i18n-attr="aria-label:themeLabel"><svg aria-hidden="true"><use href="#i-moon"/></svg></button>
+      <a class="chip" href="https://github.com/alexandremarce3-lgtm/declic" rel="noopener"><svg aria-hidden="true"><use href="#i-github"/></svg><span class="gh-label">GitHub</span></a>
+      <button class="chip menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="pills">
+          <span class="pill"><span class="dot"></span><span data-i18n="pillFree">Libre et gratuit · licence MIT</span></span>
+          <span class="pill"><span class="dot"></span><span data-i18n="pillPrivacy">Sans compte, sans publicité, sans pistage</span></span>
+        </div>
+        <h1 data-i18n="heroTitle">Apprendre la photographie, <em>simplement.</em></h1>
+        <p class="lead" data-i18n="heroLead">Comprendre, régler, pratiquer : Déclic accompagne les débutants, les passionnés qui progressent et les pros qui veulent un mémento sur le terrain. Tout reste sur votre téléphone.</p>
+        <div class="ctas">
+          <a class="btn btn-accent" href="https://github.com/alexandremarce3-lgtm/declic/releases/latest" rel="noopener"><svg aria-hidden="true"><use href="#i-android"/></svg><span data-i18n="ctaDownload">Télécharger pour Android</span></a>
+          <a class="btn btn-ghost" href="https://github.com/alexandremarce3-lgtm/declic" rel="noopener"><svg aria-hidden="true"><use href="#i-github"/></svg><span data-i18n="ctaCode">Voir le code source</span></a>
+        </div>
+        <p class="small-note"><svg aria-hidden="true"><use href="#i-globe"/></svg><span data-i18n="langNote">En français et en anglais : l'app suit la langue de votre téléphone.</span></p>
+      </div>
+
+      <div class="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="s-over" data-i18n="mockOver">CHAPITRE 1 · FONDAMENTAL</div>
+          <div class="s-title" data-i18n="mockTitle">Le triangle d'exposition</div>
+          <div class="s-card">
+            <div class="s-row">
+              <div>
+                <div style="font-weight:600" data-i18n="mockRank">Amateur Éclairé</div>
+                <small style="color:#9BA1A8">186 / 300 XP</small>
+              </div>
+              <div class="rank">B</div>
+            </div>
+            <div class="xp"><i></i></div>
+          </div>
+          <div class="s-card s-sheet">
+            <span class="ico"><svg><use href="#i-sliders"/></svg></span>
+            <div><span data-i18n="mockSheet1">Ouverture</span><small>f/1.8 · f/8 · f/16</small></div>
+          </div>
+          <div class="s-card s-sheet">
+            <span class="ico"><svg><use href="#i-target"/></svg></span>
+            <div><span data-i18n="mockSheet2">Défi : figer le mouvement</span><small>+20 XP</small></div>
+          </div>
+          <div class="s-sos"><svg><use href="#i-sos"/></svg><span data-i18n="mockSos">SOS Photo ratée</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="pour-qui">
+    <div class="wrap">
+      <div class="head center">
+        <p class="overline" data-i18n="audOver">Pour qui ?</p>
+        <h2 data-i18n="audTitle">Du premier déclenchement au mémento de terrain</h2>
+      </div>
+      <div class="grid g3">
+        <article class="card">
+          <div class="ic"><svg aria-hidden="true"><use href="#i-cap"/></svg></div>
+          <h3 data-i18n="aud1T">Débutants</h3>
+          <p data-i18n="aud1P">Les fiches en version Simple : des mots de tous les jours et des exemples dessinés, sans jargon.</p>
+        </article>
+        <article class="card">
+          <div class="ic amber"><svg aria-hidden="true"><use href="#i-sliders"/></svg></div>
+          <h3 data-i18n="aud2T">Passionnés qui progressent</h3>
+          <p data-i18n="aud2P">La version Complète et ses simulateurs : ouverture, vitesse, ISO, mesure de la lumière, composition. Puis des tests pour valider vos acquis.</p>
+        </article>
+        <article class="card">
+          <div class="ic"><svg aria-hidden="true"><use href="#i-bag"/></svg></div>
+          <h3 data-i18n="aud3T">Professionnels</h3>
+          <p data-i18n="aud3P">Un aide-mémoire rapide en séance, et un accord écrit signé à deux pour cadrer vos collaborations TFP.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="fonctionnalites">
+    <div class="wrap">
+      <div class="head center">
+        <p class="overline" data-i18n="featOver">Fonctionnalités</p>
+        <h2 data-i18n="featTitle">Tout un manuel photo dans la poche</h2>
+      </div>
+      <div class="grid g3">
+        <article class="card">
+          <div class="ic"><svg aria-hidden="true"><use href="#i-book"/></svg></div>
+          <h3 data-i18n="f1T">Des fiches en deux versions</h3>
+          <p data-i18n="f1P"><strong>Simple</strong> (mots du quotidien, exemples dessinés) ou <strong>Complète</strong> (simulateurs à manipuler). Trois paliers : Fondamental, Avancé, Expert.</p>
+          <span class="tag" data-i18n="f1Tag">Simple · Complète</span>
+        </article>
+        <article class="card">
+          <div class="ic amber"><svg aria-hidden="true"><use href="#i-target"/></svg></div>
+          <h3 data-i18n="f2T">Défis et carnet photo</h3>
+          <p data-i18n="f2P">Des défis concrets à faire avec votre appareil ou votre téléphone. Ajoutez la photo au carnet pour garder la trace de vos progrès.</p>
+          <span class="tag" data-i18n="f2Tag">Carnet privé, sur le téléphone</span>
+        </article>
+        <article class="card sos">
+          <div class="ic brick"><svg aria-hidden="true"><use href="#i-sos"/></svg></div>
+          <h3 data-i18n="f3T">SOS Photo ratée</h3>
+          <p data-i18n="f3P">Flou, trop sombre, trop clair, du grain… Décrivez le problème, Déclic vous donne la cause et le bon réglage.</p>
+          <span class="tag" data-i18n="f3Tag">La solution en un geste</span>
+        </article>
+        <article class="card span2">
+          <div class="ic amber"><svg aria-hidden="true"><use href="#i-trophy"/></svg></div>
+          <h3 data-i18n="f4T">Rangs, XP, avatar et succès</h3>
+          <p data-i18n="f4P">Chaque fiche lue, défi réussi ou solution SOS consultée rapporte de l'XP. Les pièces de l'avatar se débloquent en progressant, et certains succès restent secrets.</p>
+          <div class="ranks">
+            <div class="rk"><b>C</b><span data-i18n="rC">Débutant · Apprenti</span><small>0 – 99 XP</small></div>
+            <div class="rk"><b>B</b><span data-i18n="rB">Amateur Éclairé</span><small>100 – 299 XP</small></div>
+            <div class="rk"><b>A</b><span data-i18n="rA">Photographe Confirmé</span><small>300 – 599 XP</small></div>
+            <div class="rk"><b>S</b><span data-i18n="rS">Maître de l'Optique</span><small>600 XP +</small></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="ic"><svg aria-hidden="true"><use href="#i-sign"/></svg></div>
+          <h3 data-i18n="f5T">Photographes et modèles (18+)</h3>
+          <p data-i18n="f5P">Les règles du TFP, une charte et le <strong>Contrat-Minute</strong> : un accord écrit, signé par les deux personnes sur l'écran et exporté en PDF.</p>
+          <span class="tag" data-i18n="f5Tag">Signé à deux · export PDF</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="installer">
+    <div class="wrap">
+      <div class="head center">
+        <p class="overline" data-i18n="instOver">Installer</p>
+        <h2 data-i18n="instTitle">Installer Déclic sur Android</h2>
+        <p class="lead" data-i18n="instLead">Déclic est distribué directement sur GitHub, hors Play Store. Comptez une minute.</p>
+      </div>
+      <div class="grid g2">
+        <div class="card">
+          <ol class="steps">
+            <li><p data-i18n="s1"><strong>Ouvrez la page Releases</strong> depuis votre téléphone Android.</p></li>
+            <li><p data-i18n="s2"><strong>Téléchargez le fichier .apk</strong> de la dernière version.</p></li>
+            <li><p data-i18n="s3"><strong>Ouvrez-le.</strong> Android demande d'autoriser l'installation depuis cette source : acceptez.</p></li>
+            <li><p data-i18n="s4"><strong>Play Protect affiche un avertissement ?</strong> Touchez « Installer quand même » : c'est normal pour une app hors Play Store.</p></li>
+          </ol>
+          <a class="btn btn-accent" href="https://github.com/alexandremarce3-lgtm/declic/releases/latest" rel="noopener"><svg aria-hidden="true"><use href="#i-android"/></svg><span data-i18n="instBtn">Ouvrir la dernière version</span></a>
+        </div>
+        <div class="stack">
+          <div class="card">
+            <div class="ic amber"><svg aria-hidden="true"><use href="#i-refresh"/></svg></div>
+            <h3 data-i18n="updT">Mises à jour</h3>
+            <p data-i18n="updP">Installez la nouvelle version par-dessus l'ancienne : votre progression est conservée. Pour être prévenu automatiquement, utilisez l'app libre <a class="inline" href="https://github.com/ImranR98/Obtainium" rel="noopener">Obtainium</a> avec l'adresse du dépôt.</p>
+          </div>
+          <div class="card">
+            <div class="ic"><svg aria-hidden="true"><use href="#i-apple"/></svg></div>
+            <h3 data-i18n="iosT">iPhone</h3>
+            <p data-i18n="iosP">Pas encore disponible : une version web installable est envisagée.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="vie-privee">
+    <div class="wrap">
+      <div class="card" style="max-width:880px;margin:0 auto;padding:clamp(24px,5vw,48px)">
+        <p class="overline" data-i18n="privOver">Vie privée</p>
+        <h2 style="font-size:clamp(28px,4vw,40px);line-height:1.15" data-i18n="privTitle">Vos données restent sur votre téléphone</h2>
+        <p class="muted" style="margin:16px 0 0" data-i18n="privLead">Nous ne recevons rien, nous ne voyons rien, nous ne vendons rien. Progression, photos du carnet, accords et profil restent dans la mémoire privée de l'application.</p>
+        <div class="facts">
+          <div class="fact"><h4><svg aria-hidden="true"><use href="#i-lock"/></svg><span data-i18n="pf1T">Aucun serveur</span></h4><p data-i18n="pf1P">Aucune donnée envoyée à l'éditeur ni à un tiers.</p></div>
+          <div class="fact"><h4><svg aria-hidden="true"><use href="#i-ban"/></svg><span data-i18n="pf2T">Ni pub, ni traceur</span></h4><p data-i18n="pf2P">Pas de compte, pas de mesure d'audience. Sauvegarde automatique Android désactivée.</p></div>
+          <div class="fact"><h4><svg aria-hidden="true"><use href="#i-phone"/></svg><span data-i18n="pf3T">Permissions minimales</span></h4><p data-i18n="pf3P">Appareil photo seulement pour le carnet ; le micro n'est jamais utilisé.</p></div>
+        </div>
+        <p class="muted" style="margin:0;font-size:14px" data-i18n="privMore">Lire la <a class="inline" href="https://github.com/alexandremarce3-lgtm/declic/blob/main/docs/confidentialite.md" rel="noopener">politique de confidentialité</a> (<a class="inline" href="https://github.com/alexandremarce3-lgtm/declic/blob/main/docs/privacy.md" rel="noopener">English</a>). Ce site non plus ne dépose aucun cookie et ne contacte aucun service tiers : seul votre choix de langue et de thème est mémorisé dans votre navigateur.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="head center" style="margin-bottom:28px">
+        <p class="overline" data-i18n="ctOver">Contact</p>
+        <h2 data-i18n="ctTitle">Un conseil, un avis, une idée ?</h2>
+        <p class="lead" data-i18n="ctLead">Déclic évolue grâce à vos retours. Écrivez directement au créateur, ou ouvrez un ticket sur GitHub. Les traductions dans d'autres langues sont les bienvenues !</p>
+      </div>
+      <div class="ctas" style="justify-content:center">
+        <a class="btn btn-accent" href="mailto:contact@lenspicture.com?subject=D%C3%A9clic%20%E2%80%94%20avis%20et%20suggestions"><svg aria-hidden="true"><use href="#i-mail"/></svg>contact@lenspicture.com</a>
+        <a class="btn btn-ghost" href="https://github.com/alexandremarce3-lgtm/declic/issues" rel="noopener"><svg aria-hidden="true"><use href="#i-github"/></svg><span data-i18n="ctIssue">Ouvrir un ticket</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <a class="brand" href="#top"><svg aria-hidden="true"><use href="#logo"/></svg><b>Déclic</b></a>
+      <ul>
+        <li><a href="https://github.com/alexandremarce3-lgtm/declic" rel="noopener">GitHub</a></li>
+        <li><a href="https://github.com/alexandremarce3-lgtm/declic/releases" rel="noopener">Releases</a></li>
+        <li><a href="https://github.com/alexandremarce3-lgtm/declic/blob/main/docs/phase2-communaute.md" rel="noopener" data-i18n="footRoadmap">Feuille de route</a></li>
+        <li><a href="https://github.com/alexandremarce3-lgtm/declic/blob/main/LICENSE" rel="noopener" data-i18n="footLicense">Licence MIT</a></li>
+      </ul>
+    </div>
+    <details class="legal">
+      <summary data-i18n="legalT">Mentions légales</summary>
+      <dl>
+        <dt data-i18n="lEd">Éditeur</dt><dd data-i18n="lEdV">alexandremarce3, éditeur non professionnel (particulier) — identité communiquée à l'hébergeur (LCEN, art. 6, III-2)</dd>
+        <dt data-i18n="lDir">Directeur de publication</dt><dd>alexandremarce3</dd>
+        <dt>Contact</dt><dd><a href="mailto:contact@lenspicture.com">contact@lenspicture.com</a></dd>
+        <dt data-i18n="lHost">Hébergeur</dt><dd>GitHub, Inc. — 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, <span data-i18n="lUSA">États-Unis</span></dd>
+        <dt data-i18n="lCred">Crédits</dt><dd data-i18n="lCredV">Code sous licence MIT. Polices Playfair Display et Inter sous SIL Open Font License 1.1.</dd>
+      </dl>
+    </details>
+    <p style="margin:24px 0 0;font-size:13px">© 2026 Déclic</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var EN = {
+    skip: "Skip to content", navLabel: "Main navigation", themeLabel: "Change theme",
+    navAudience: "Who is it for?", navFeatures: "Features", navInstall: "Install", navPrivacy: "Privacy", navContact: "Contact",
+    pillFree: "Free and open source · MIT licence", pillPrivacy: "No account, no ads, no tracking",
+    heroTitle: "Learn photography, <em>simply.</em>",
+    heroLead: "Understand, set, practise: Déclic guides beginners, enthusiasts who want to improve, and pros who need a field reminder. Everything stays on your phone.",
+    ctaDownload: "Download for Android", ctaCode: "View the source code",
+    langNote: "In English and French: the app follows your phone's language.",
+    mockOver: "CHAPTER 1 · FUNDAMENTALS", mockTitle: "The exposure triangle", mockRank: "Enlightened Amateur",
+    mockSheet1: "Aperture", mockSheet2: "Challenge: freeze motion", mockSos: "Photo SOS",
+    audOver: "Who is it for?", audTitle: "From your first shot to a field reminder",
+    aud1T: "Beginners", aud1P: "Lessons in their Simple version: everyday words and illustrated examples, no jargon.",
+    aud2T: "Improving enthusiasts", aud2P: "The Full version and its simulators: aperture, shutter speed, ISO, metering, composition. Then tests to validate what you've learned.",
+    aud3T: "Professionals", aud3P: "A quick reminder during a shoot, and a written agreement signed by both people to frame your TFP collaborations.",
+    featOver: "Features", featTitle: "A whole photography handbook in your pocket",
+    f1T: "Lessons in two versions", f1P: "<strong>Simple</strong> (everyday words, illustrated examples) or <strong>Full</strong> (interactive simulators). Three levels: Fundamentals, Advanced, Expert.", f1Tag: "Simple · Full",
+    f2T: "Challenges and photo journal", f2P: "Real-life challenges to do with your camera or phone. Add the photo to your journal to keep track of your progress.", f2Tag: "Private journal, on your phone",
+    f3T: "Photo SOS", f3P: "Blurry, too dark, too bright, grainy… Describe the problem, Déclic gives you the cause and the right setting.", f3Tag: "The fix in one tap",
+    f4T: "Ranks, XP, avatar and achievements", f4P: "Every lesson read, challenge completed or SOS fix viewed earns XP. Avatar items unlock as you progress, and some achievements stay secret.",
+    rC: "Beginner · Apprentice", rB: "Enlightened Amateur", rA: "Confirmed Photographer", rS: "Master of Optics",
+    f5T: "Photographers and models (18+)", f5P: "TFP ground rules, a charter and the <strong>Quick Agreement</strong>: a written agreement signed on screen by both people and exported as a PDF.", f5Tag: "Signed by both · PDF export",
+    instOver: "Install", instTitle: "Install Déclic on Android", instLead: "Déclic is distributed directly on GitHub, outside the Play Store. It takes a minute.",
+    s1: "<strong>Open the Releases page</strong> on your Android phone.",
+    s2: "<strong>Download the .apk file</strong> of the latest version.",
+    s3: "<strong>Open it.</strong> Android asks you to allow installs from this source: accept.",
+    s4: "<strong>Play Protect shows a warning?</strong> Tap “Install anyway”: that's normal for an app outside the Play Store.",
+    instBtn: "Open the latest version",
+    updT: "Updates", updP: "Install the new version over the old one: your progress is kept. To be notified automatically, use the free app <a class=\"inline\" href=\"https://github.com/ImranR98/Obtainium\" rel=\"noopener\">Obtainium</a> with the repository's address.",
+    iosT: "iPhone", iosP: "Not available yet: an installable web version is being considered.",
+    privOver: "Privacy", privTitle: "Your data stays on your phone",
+    privLead: "We don't receive it, we don't see it, we don't sell it. Progress, journal photos, agreements and profile stay in the app's private storage.",
+    pf1T: "No server", pf1P: "No data is sent to the publisher or to any third party.",
+    pf2T: "No ads, no trackers", pf2P: "No account, no audience measurement. Android automatic backup is disabled.",
+    pf3T: "Minimal permissions", pf3P: "Camera only for the journal; the microphone is never used.",
+    privMore: "Read the <a class=\"inline\" href=\"https://github.com/alexandremarce3-lgtm/declic/blob/main/docs/privacy.md\" rel=\"noopener\">privacy policy</a> (<a class=\"inline\" href=\"https://github.com/alexandremarce3-lgtm/declic/blob/main/docs/confidentialite.md\" rel=\"noopener\">français</a>). This website doesn't set cookies or contact any third-party service either: only your language and theme choice is remembered in your browser.",
+    ctOver: "Contact", ctTitle: "A tip, some feedback, an idea?",
+    ctLead: "Déclic grows thanks to your feedback. Write to the creator directly, or open an issue on GitHub. Translations into other languages are welcome!",
+    ctIssue: "Open an issue",
+    footRoadmap: "Roadmap", footLicense: "MIT licence",
+    legalT: "Legal notice", lEd: "Publisher",
+    lEdV: "alexandremarce3, non-professional publisher (private individual) — identity provided to the host (French LCEN law, art. 6, III-2)",
+    lDir: "Publication director", lHost: "Host", lUSA: "USA",
+    lCred: "Credits", lCredV: "Code under the MIT licence. Playfair Display and Inter fonts under the SIL Open Font License 1.1."
+  };
+  var TITLES = {
+    fr: "Déclic — Apprendre la photographie, simplement",
+    en: "Déclic — Learn photography, simply"
+  };
+
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+
+  // Mémorise le texte français d'origine (présent dans le HTML) pour pouvoir y revenir
+  var nodes = document.querySelectorAll("[data-i18n]");
+  var FR = {};
+  nodes.forEach(function (el) { FR[el.dataset.i18n] = el.innerHTML; });
+  var attrNodes = document.querySelectorAll("[data-i18n-attr]");
+  attrNodes.forEach(function (el) {
+    var p = el.dataset.i18nAttr.split(":"); FR[p[1]] = el.getAttribute(p[0]);
+  });
+
+  var langBtn = document.getElementById("lang");
+  function setLang(lang) {
+    var dict = lang === "en" ? EN : FR;
+    nodes.forEach(function (el) { var v = dict[el.dataset.i18n]; if (v != null) el.innerHTML = v; });
+    attrNodes.forEach(function (el) { var p = el.dataset.i18nAttr.split(":"); var v = dict[p[1]]; if (v != null) el.setAttribute(p[0], v); });
+    document.documentElement.lang = lang;
+    document.title = TITLES[lang];
+    langBtn.textContent = lang === "en" ? "FR" : "EN";
+    langBtn.setAttribute("aria-label", lang === "en" ? "Passer en français" : "Switch to English");
+    store("declic-lang", lang);
+  }
+  var saved = store("declic-lang");
+  var initial = saved || ((navigator.language || "fr").toLowerCase().indexOf("fr") === 0 ? "fr" : "en");
+  if (initial === "en") setLang("en");
+  langBtn.addEventListener("click", function () { setLang(document.documentElement.lang === "en" ? "fr" : "en"); });
+
+  // Thème : suit le téléphone par défaut (comme l'app), bascule manuelle possible
+  var root = document.documentElement;
+  var savedTheme = store("declic-theme");
+  if (savedTheme === "light" || savedTheme === "dark") root.dataset.theme = savedTheme;
+  document.getElementById("theme").addEventListener("click", function () {
+    var current = root.dataset.theme || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    root.dataset.theme = current === "light" ? "dark" : "light";
+    store("declic-theme", root.dataset.theme);
+  });
+
+  // Menu mobile
+  var nav = document.getElementById("nav"), menu = document.getElementById("menu");
+  menu.addEventListener("click", function () {
+    var open = nav.classList.toggle("open");
+    menu.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  nav.addEventListener("click", function (e) {
+    if (e.target.closest("a")) { nav.classList.remove("open"); menu.setAttribute("aria-expanded", "false"); }
+  });
+})();
+</script>
+</body>
+</html>
