@@ -123,18 +123,25 @@ nav a:hover{color:var(--text)}
 .phone{justify-self:center;width:min(300px,100%);aspect-ratio:9/18.5;border-radius:38px;padding:10px;background:linear-gradient(160deg,#2A3039,#0f1216);box-shadow:0 30px 80px -30px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04) inset}
 .screen{height:100%;border-radius:30px;background:#0A0C10;color:#ECEAE4;padding:22px 16px;display:flex;flex-direction:column;gap:12px;overflow:hidden;font-size:13px}
 .screen .s-over{font:600 9.5px var(--sans);letter-spacing:.16em;color:#E5B239}
-.screen .s-title{font:700 24px/1.15 var(--serif)}
+.screen .s-title{font:700 32px/1.1 var(--serif);margin-top:4px}
+.s-rule{width:34px;height:2px;background:#E5B239;margin:8px 0}
+.s-tag{color:#9BA1A8;font-size:12px;line-height:1.45}
 .s-card{background:#161A20;border:1px solid #2A3039;border-radius:14px;padding:12px}
 .s-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .rank{width:38px;height:38px;border-radius:10px;background:#3B5249;color:#ECEAE4;display:grid;place-items:center;font:700 18px var(--serif)}
 .xp{height:6px;border-radius:6px;background:#1F242C;overflow:hidden;margin-top:10px}
 .xp i{display:block;height:100%;width:62%;background:#E5B239;border-radius:6px}
-.s-sheet{display:flex;gap:10px;align-items:center}
-.s-sheet .ico{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:#1F242C;color:#93B3A4;flex:none}
-.s-sheet .ico svg{width:16px;height:16px}
-.s-sheet small{display:block;color:#9BA1A8;font-size:11px}
-.s-sos{background:#C2593F;color:#fff;border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px;font-weight:600;margin-top:auto}
-.s-sos svg{width:18px;height:18px}
+.s-sos{border:1.5px solid #C2593F;border-radius:14px;padding:12px;display:grid;gap:10px}
+.s-sos-t{font:600 15px var(--serif);color:#E07A60}
+.s-sos small,.s-ch small{display:block;color:#9BA1A8;font-size:10.5px;line-height:1.35}
+.s-chips{display:flex;flex-wrap:wrap;gap:6px}
+.s-chips>span{display:inline-flex;gap:5px;align-items:center;padding:5px 10px;border-radius:999px;background:#1F242C;font-size:11px}
+.s-chips b{color:#E07A60;font-weight:500}
+.s-ch{background:#3B5249;color:#ECEAE4;border-radius:14px;padding:12px}
+.s-ch-t{font:700 17px var(--serif)}
+.s-ch small{color:rgba(236,234,228,.85)}
+.s-ch-bar{height:5px;border-radius:3px;background:rgba(236,234,228,.2);margin-top:8px;overflow:hidden}
+.s-ch-bar i{display:block;height:100%;width:40%;background:#ECEAE4}
 
 /* Sections */
 section{padding:88px 0;border-top:1px solid var(--border)}
@@ -175,6 +182,7 @@ section{padding:88px 0;border-top:1px solid var(--border)}
 .steps p{margin:0;color:var(--muted)}
 .stack{display:grid;gap:20px;align-content:start}
 .card .btn{width:100%}
+.apk-meta{margin:12px 0 0;text-align:center;font-size:13px;color:var(--muted)}
 .card a.inline{color:var(--accent-ink);text-underline-offset:3px}
 
 /* Vie privée */
@@ -272,16 +280,21 @@ details.legal dd{margin:0}
         <h1 data-i18n="heroTitle">Apprendre la photographie, <em>simplement.</em></h1>
         <p class="lead" data-i18n="heroLead">Comprendre, régler, pratiquer : Déclic accompagne les débutants, les passionnés qui progressent et les pros qui veulent un mémento sur le terrain. Tout reste sur votre téléphone.</p>
         <div class="ctas">
-          <a class="btn btn-accent" href="https://github.com/alexandremarce3-lgtm/declic/releases/latest" rel="noopener"><svg aria-hidden="true"><use href="#i-android"/></svg><span data-i18n="ctaDownload">Télécharger pour Android</span></a>
+          <a class="btn btn-accent apk-link" href="https://github.com/alexandremarce3-lgtm/declic/releases/download/v0.2.0/declic-0.2.0.apk" download><svg aria-hidden="true"><use href="#i-android"/></svg><span data-i18n="ctaDownload">Télécharger l'APK Android</span></a>
           <a class="btn btn-ghost" href="https://github.com/alexandremarce3-lgtm/declic" rel="noopener"><svg aria-hidden="true"><use href="#i-github"/></svg><span data-i18n="ctaCode">Voir le code source</span></a>
         </div>
-        <p class="small-note"><svg aria-hidden="true"><use href="#i-globe"/></svg><span data-i18n="langNote">En français et en anglais : l'app suit la langue de votre téléphone.</span></p>
+        <p class="small-note"><svg aria-hidden="true"><use href="#i-android"/></svg><span data-i18n="heroApk">Version 0.2.0 · fichier .apk, installation en une minute</span></p>
+        <p class="small-note" style="margin-top:8px"><svg aria-hidden="true"><use href="#i-globe"/></svg><span data-i18n="langNote">En français et en anglais : l'app suit la langue de votre téléphone.</span></p>
       </div>
 
       <div class="phone" aria-hidden="true">
         <div class="screen">
-          <div class="s-over" data-i18n="mockOver">CHAPITRE 1 · FONDAMENTAL</div>
-          <div class="s-title" data-i18n="mockTitle">Le triangle d'exposition</div>
+          <div>
+            <div class="s-over" data-i18n="mockOver">PETIT MANUEL DE PHOTOGRAPHIE</div>
+            <div class="s-title">Déclic</div>
+            <div class="s-rule"></div>
+            <div class="s-tag" data-i18n="mockTag">Les bases de la photo : comprendre, régler, pratiquer.</div>
+          </div>
           <div class="s-card">
             <div class="s-row">
               <div>
@@ -292,15 +305,31 @@ details.legal dd{margin:0}
             </div>
             <div class="xp"><i></i></div>
           </div>
-          <div class="s-card s-sheet">
-            <span class="ico"><svg><use href="#i-sliders"/></svg></span>
-            <div><span data-i18n="mockSheet1">Ouverture</span><small>f/1.8 · f/8 · f/16</small></div>
+          <div class="s-sos">
+            <div class="s-row">
+              <div>
+                <div class="s-sos-t" data-i18n="mockSos">SOS Photo ratée</div>
+                <small data-i18n="mockSosLead">Diagnostic en un geste, solution immédiate.</small>
+              </div>
+              <span style="color:#9BA1A8">›</span>
+            </div>
+            <div class="s-chips">
+              <span><b>≋</b><span data-i18n="sym1">floue</span></span>
+              <span><b>◐</b><span data-i18n="sym2">trop sombre</span></span>
+              <span><b>☀</b><span data-i18n="sym3">trop claire</span></span>
+              <span><b>⁘</b><span data-i18n="sym4">granuleuse</span></span>
+            </div>
           </div>
-          <div class="s-card s-sheet">
-            <span class="ico"><svg><use href="#i-target"/></svg></span>
-            <div><span data-i18n="mockSheet2">Défi : figer le mouvement</span><small>+20 XP</small></div>
+          <div class="s-ch">
+            <div class="s-ch-t" data-i18n="mockCh">Défis photo</div>
+            <small data-i18n="mockChP">6 / 15 réalisés</small>
+            <div class="s-ch-bar"><i></i></div>
           </div>
-          <div class="s-sos"><svg><use href="#i-sos"/></svg><span data-i18n="mockSos">SOS Photo ratée</span></div>
+          <div class="s-card">
+            <div class="s-over" style="color:#93B3A4" data-i18n="mockTier">PALIER FONDAMENTAL · 4 FICHES</div>
+            <div style="font:600 15px var(--serif);margin-top:6px" data-i18n="mockSheet">Le triangle d'exposition</div>
+            <small style="color:#9BA1A8;font-size:10.5px" data-i18n="mockSheetP">Ouverture, vitesse, ISO</small>
+          </div>
         </div>
       </div>
     </div>
@@ -354,7 +383,7 @@ details.legal dd{margin:0}
         <article class="card sos">
           <div class="ic brick"><svg aria-hidden="true"><use href="#i-sos"/></svg></div>
           <h3 data-i18n="f3T">SOS Photo ratée</h3>
-          <p data-i18n="f3P">Flou, trop sombre, trop clair, du grain… Décrivez le problème, Déclic vous donne la cause et le bon réglage.</p>
+          <p data-i18n="f3P">Floue, trop sombre, trop claire, granuleuse… Touchez le symptôme, Déclic vous donne la cause et le bon réglage.</p>
           <span class="tag" data-i18n="f3Tag">La solution en un geste</span>
         </article>
         <article class="card span2">
@@ -383,17 +412,17 @@ details.legal dd{margin:0}
       <div class="head center">
         <p class="overline" data-i18n="instOver">Installer</p>
         <h2 data-i18n="instTitle">Installer Déclic sur Android</h2>
-        <p class="lead" data-i18n="instLead">Déclic est distribué directement sur GitHub, hors Play Store. Comptez une minute.</p>
+        <p class="lead" data-i18n="instLead">Déclic est distribué hors Play Store, sous forme de fichier .apk hébergé sur GitHub. Comptez une minute.</p>
       </div>
       <div class="grid g2">
         <div class="card">
           <ol class="steps">
-            <li><p data-i18n="s1"><strong>Ouvrez la page Releases</strong> depuis votre téléphone Android.</p></li>
-            <li><p data-i18n="s2"><strong>Téléchargez le fichier .apk</strong> de la dernière version.</p></li>
+            <li><p data-i18n="s2"><strong>Touchez « Télécharger l'APK »</strong> depuis votre téléphone Android : le fichier se télécharge directement.</p></li>
             <li><p data-i18n="s3"><strong>Ouvrez-le.</strong> Android demande d'autoriser l'installation depuis cette source : acceptez.</p></li>
             <li><p data-i18n="s4"><strong>Play Protect affiche un avertissement ?</strong> Touchez « Installer quand même » : c'est normal pour une app hors Play Store.</p></li>
           </ol>
-          <a class="btn btn-accent" href="https://github.com/alexandremarce3-lgtm/declic/releases/latest" rel="noopener"><svg aria-hidden="true"><use href="#i-android"/></svg><span data-i18n="instBtn">Ouvrir la dernière version</span></a>
+          <a class="btn btn-accent apk-link" href="https://github.com/alexandremarce3-lgtm/declic/releases/download/v0.2.0/declic-0.2.0.apk" download><svg aria-hidden="true"><use href="#i-android"/></svg><span data-i18n="instBtn">Télécharger l'APK</span></a>
+          <p class="apk-meta"><span data-i18n="apkMeta">Version 0.2.0 · Android</span> · <a class="inline" href="https://github.com/alexandremarce3-lgtm/declic/releases" rel="noopener" data-i18n="apkAll">toutes les versions</a></p>
         </div>
         <div class="stack">
           <div class="card">
@@ -475,10 +504,12 @@ details.legal dd{margin:0}
     pillFree: "Free and open source · MIT licence", pillPrivacy: "No account, no ads, no tracking",
     heroTitle: "Learn photography, <em>simply.</em>",
     heroLead: "Understand, set, practise: Déclic guides beginners, enthusiasts who want to improve, and pros who need a field reminder. Everything stays on your phone.",
-    ctaDownload: "Download for Android", ctaCode: "View the source code",
+    ctaDownload: "Download the Android APK", heroApk: "Version 0.2.0 · .apk file, installs in a minute", apkMeta: "Version 0.2.0 · Android", apkAll: "all versions", ctaCode: "View the source code",
     langNote: "In English and French: the app follows your phone's language.",
-    mockOver: "CHAPTER 1 · FUNDAMENTALS", mockTitle: "The exposure triangle", mockRank: "Enlightened Amateur",
-    mockSheet1: "Aperture", mockSheet2: "Challenge: freeze motion", mockSos: "Photo SOS",
+    mockOver: "A POCKET PHOTOGRAPHY MANUAL", mockTag: "Photography basics: understand, set up, practice.", mockRank: "Enlightened Amateur",
+    mockSos: "Photo SOS", mockSosLead: "Diagnose in one tap, fix it right away.", sym1: "blurry", sym2: "too dark", sym3: "too bright", sym4: "grainy",
+    mockTier: "FUNDAMENTALS · 4 LESSONS", mockSheet: "The exposure triangle", mockSheetP: "Aperture, shutter speed, ISO",
+    mockCh: "Photo challenges", mockChP: "6 / 15 completed",
     audOver: "Who is it for?", audTitle: "From your first shot to a field reminder",
     aud1T: "Beginners", aud1P: "Lessons in their Simple version: everyday words and illustrated examples, no jargon.",
     aud2T: "Improving enthusiasts", aud2P: "The Full version and its simulators: aperture, shutter speed, ISO, metering, composition. Then tests to validate what you've learned.",
@@ -486,16 +517,15 @@ details.legal dd{margin:0}
     featOver: "Features", featTitle: "A whole photography handbook in your pocket",
     f1T: "Lessons in two versions", f1P: "<strong>Simple</strong> (everyday words, illustrated examples) or <strong>Full</strong> (interactive simulators). Three levels: Fundamentals, Advanced, Expert.", f1Tag: "Simple · Full",
     f2T: "Challenges and photo journal", f2P: "Real-life challenges to do with your camera or phone. Add the photo to your journal to keep track of your progress.", f2Tag: "Private journal, on your phone",
-    f3T: "Photo SOS", f3P: "Blurry, too dark, too bright, grainy… Describe the problem, Déclic gives you the cause and the right setting.", f3Tag: "The fix in one tap",
+    f3T: "Photo SOS", f3P: "Blurry, too dark, too bright, grainy… Tap the symptom, Déclic gives you the cause and the right setting.", f3Tag: "The fix in one tap",
     f4T: "Ranks, XP, avatar and achievements", f4P: "Every lesson read, challenge completed or SOS fix viewed earns XP. Avatar items unlock as you progress, and some achievements stay secret.",
     rC: "Beginner · Apprentice", rB: "Enlightened Amateur", rA: "Confirmed Photographer", rS: "Master of Optics",
     f5T: "Photographers and models (18+)", f5P: "TFP ground rules, a charter and the <strong>Quick Agreement</strong>: a written agreement signed on screen by both people and exported as a PDF.", f5Tag: "Signed by both · PDF export",
-    instOver: "Install", instTitle: "Install Déclic on Android", instLead: "Déclic is distributed directly on GitHub, outside the Play Store. It takes a minute.",
-    s1: "<strong>Open the Releases page</strong> on your Android phone.",
-    s2: "<strong>Download the .apk file</strong> of the latest version.",
+    instOver: "Install", instTitle: "Install Déclic on Android", instLead: "Déclic is distributed outside the Play Store, as an .apk file hosted on GitHub. It takes a minute.",
+        s2: "<strong>Tap “Download the APK”</strong> on your Android phone: the file downloads directly.",
     s3: "<strong>Open it.</strong> Android asks you to allow installs from this source: accept.",
     s4: "<strong>Play Protect shows a warning?</strong> Tap “Install anyway”: that's normal for an app outside the Play Store.",
-    instBtn: "Open the latest version",
+    instBtn: "Download the APK",
     updT: "Updates", updP: "Install the new version over the old one: your progress is kept. To be notified automatically, use the free app <a class=\"inline\" href=\"https://github.com/ImranR98/Obtainium\" rel=\"noopener\">Obtainium</a> with the repository's address.",
     iosT: "iPhone", iosP: "Not available yet: an installable web version is being considered.",
     privOver: "Privacy", privTitle: "Your data stays on your phone",
